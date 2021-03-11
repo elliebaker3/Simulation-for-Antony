@@ -3,4 +3,54 @@
    uuid = "021047A6-E72A-4215-88CF-106BA819F43A"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DC7CFA16-5DA4-46C2-B39B-CB534D8977E9"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MapKitDrawing/StatusViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
+            landmarkName = "tx_server_response_status"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "DC7CFA16-5DA4-46C2-B39B-CB534D8977E9 - afb83ec10552682b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[StatusViewController tx_server_response_status]"
+                  moduleName = "MapKitDrawingEllie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/elliebaker/Downloads/MapKitDrawing-master/MapKitDrawing/StatusViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  uuid = "DC7CFA16-5DA4-46C2-B39B-CB534D8977E9 - 1abc1478a34a991"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[StatusViewController setTx_server_response_status:]"
+                  moduleName = "MapKitDrawingEllie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/elliebaker/Downloads/MapKitDrawing-master/MapKitDrawing/StatusViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18"
+                  offsetFromSymbolStart = "49">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

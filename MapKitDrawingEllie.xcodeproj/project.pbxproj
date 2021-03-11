@@ -22,6 +22,8 @@
 		649E1E9E192B61A50055A0F3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 649E1E9C192B61A50055A0F3 /* InfoPlist.strings */; };
 		649E1EA0192B61A50055A0F3 /* MapKitDrawingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 649E1E9F192B61A50055A0F3 /* MapKitDrawingTests.m */; };
 		649E1EAB192B61C70055A0F3 /* CanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 649E1EA9192B61C70055A0F3 /* CanvasView.m */; };
+		79D1F22C25E9942500D3AD25 /* StatusHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D1F22B25E9942500D3AD25 /* StatusHomeViewController.m */; };
+		79F395A125D1A89E00A45BEE /* ReceiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F395A025D1A89E00A45BEE /* ReceiveViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,10 @@
 		649E1E9F192B61A50055A0F3 /* MapKitDrawingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapKitDrawingTests.m; sourceTree = "<group>"; };
 		649E1EA9192B61C70055A0F3 /* CanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasView.m; sourceTree = "<group>"; };
 		649E1EAA192B61C70055A0F3 /* CanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasView.h; sourceTree = "<group>"; };
+		79D1F22A25E9942500D3AD25 /* StatusHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusHomeViewController.h; sourceTree = "<group>"; };
+		79D1F22B25E9942500D3AD25 /* StatusHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusHomeViewController.m; sourceTree = "<group>"; };
+		79F3959F25D1A89E00A45BEE /* ReceiveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReceiveViewController.h; sourceTree = "<group>"; };
+		79F395A025D1A89E00A45BEE /* ReceiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReceiveViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +126,10 @@
 				649E1E83192B61A50055A0F3 /* AppDelegate.h */,
 				649E1E84192B61A50055A0F3 /* AppDelegate.m */,
 				649E1E86192B61A50055A0F3 /* Main.storyboard */,
+				79D1F22A25E9942500D3AD25 /* StatusHomeViewController.h */,
+				79D1F22B25E9942500D3AD25 /* StatusHomeViewController.m */,
+				79F3959F25D1A89E00A45BEE /* ReceiveViewController.h */,
+				79F395A025D1A89E00A45BEE /* ReceiveViewController.m */,
 				649E1E89192B61A50055A0F3 /* ViewController.h */,
 				649E1E8A192B61A50055A0F3 /* ViewController.m */,
 				649E1E8C192B61A50055A0F3 /* Images.xcassets */,
@@ -258,9 +268,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79F395A125D1A89E00A45BEE /* ReceiveViewController.m in Sources */,
 				649E1E8B192B61A50055A0F3 /* ViewController.m in Sources */,
 				649E1E85192B61A50055A0F3 /* AppDelegate.m in Sources */,
 				649E1EAB192B61C70055A0F3 /* CanvasView.m in Sources */,
+				79D1F22C25E9942500D3AD25 /* StatusHomeViewController.m in Sources */,
 				649E1E81192B61A50055A0F3 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

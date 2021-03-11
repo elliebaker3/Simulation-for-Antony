@@ -33,7 +33,7 @@
 
 int type = 100;
 int idvar = 100;
-bool invalid = false;
+
 
 
 - (NSMutableArray*)coordinates
@@ -112,7 +112,7 @@ bool invalid = false;
         memset(&servaddr, 0, sizeof(servaddr));
         servaddr.sin_family = AF_INET;
         servaddr.sin_port   = htons(port);
-        if(inet_aton("10.0.0.145",&(servaddr.sin_addr)) <= 0)
+        if(inet_aton("127.01",&(servaddr.sin_addr)) <= 0)
             printf("CLIENT: Error on inet_pton\n");
           /* send and recieve NMSGS */
             
@@ -121,16 +121,6 @@ bool invalid = false;
                 printf("CLIENT: Error creating listening socket.\n");
                 /* connect to the server */
             
-        /*set timeout on receiving a response*/
-        /*struct timeval tv;
-        tv.tv_usec = 1;
-        int timeoutset;
-        //can set at the socket level, but attempt to indicate that an option is interpreted by the TCP yields an error "Protocol not available"
-        if ((timeoutset = setsockopt(sock, IPPROTO_TCP, SO_RCVTIMEO, (const char*)&tv, sizeof tv)) < 0) {
-            printf("timeout setting error");
-        }
-        */
-        
         
         if((res = connect(sock,(struct sockaddr *) &servaddr, sizeof(servaddr))) < 0) {
                 printf("CLIENT: Error calling connect (%s)\n",strerror(errno));
@@ -143,66 +133,33 @@ bool invalid = false;
         float converter;
         msg[0] = 0x30;
         
-        if (invalid == false) {
-            msg[1] = (int)sentpoints[0].latitude;
-            converter = sentpoints[0].latitude - (int)sentpoints[0].latitude;
-            converter = 60*converter;
-            msg[2] = (int)converter;
-            converter = converter-(int)converter;
-            converter = 60*converter;
-            msg[3] = (int)converter;
-            msg[4]= abs((int)sentpoints[0].longitude);
-            converter = fabs(sentpoints[0].longitude) - abs((int)sentpoints[0].longitude);
-            converter = 60*converter;
-            if (sentpoints[0].longitude > 0) {
-                msg[5] = 0x0;
-            }
-            else {
-                msg[5] = 0xFF;
-            }
-            msg[6] = (int)converter; //give it 0x0 or 0x255
-            converter = converter-(int)converter;
-            converter = 60*converter; //store the number as an int16 have the
-            //get a pointer u32*bp assign first half to one variable and the second half to the other
-            //assign to 16int iterate over it twice first byte first var second byte second var
-            msg[7] = (int)converter;
-            msg[9] = idvar;
-            printf("\n\n TARGET\nlatitude deg %d, min %d, sec %d, from %f\n", msg[1], msg[2], msg[3], sentpoints[0].latitude);
-            printf("longitude deg %d, min %d, sec %d, sign %d, from %f\n", msg[4], msg[5], msg[6], msg[7], sentpoints[0].longitude);
-            idvar++;
-            if((idvar%2)!=0)             /* alternatve weapons based on msgid */
-                    msg[8] = 1;
-            else
-                    msg[8] = 2;
+
+        msg[1] = (int)sentpoints[0].latitude;
+        converter = fabs(sentpoints[0].latitude) - abs((int)sentpoints[0].latitude);
+        converter = 60*converter;
+        msg[2] = (int)converter;
+        converter = 60*converter;
+        msg[3] = (int)converter;
+        msg[4]= abs((int)sentpoints[0].longitude);
+        converter = fabs(sentpoints[0].longitude) - abs((int)sentpoints[0].longitude);
+        converter = 60*converter;
+        if (sentpoints[0].longitude > 0) {
+            msg[5] = 0x0;
         }
         else {
-            msg[1] = (uint8_t)1000;
-            converter = fabs(sentpoints[0].latitude) - abs((int)sentpoints[0].latitude);
-            converter = 60*converter;
-            msg[2] = (int)converter;
-            converter = 60*converter;
-            msg[3] = (int)converter;
-            msg[4]= abs((int)sentpoints[0].longitude);
-            converter = fabs(sentpoints[0].longitude) - abs((int)sentpoints[0].longitude);
-            converter = 60*converter;
-            if (sentpoints[0].longitude > 0) {
-                msg[5] = 0x0;
-            }
-            else {
-                msg[5] = 0xFF;
-            }
-            msg[6] = (int)converter;
-            converter = 60*converter;
-            msg[7] = (int)converter;
-            printf("\n\nINVALID TARGET\nlatitude deg %d, min %d, sec %d, from %f\n", msg[1], msg[2], msg[3], sentpoints[0].latitude);
-            printf("longitude deg %d, min %d, sec %d, degree %d, from %f\n", msg[4], msg[5], msg[6], msg[7], sentpoints[0].longitude);
-            msg[9] = idvar;
-            idvar++;
-            if((idvar%2)!=0)             /* alternatve weapons based on msgid */
-                    msg[8] = 1;
-            else
-                    msg[8] = 2;
+            msg[5] = 0xFF;
         }
+        msg[6] = (int)converter;
+        converter = 60*converter;
+        msg[7] = (int)converter;
+        printf("\n\nINVALID TARGET\nlatitude deg %d, min %d, sec %d, from %f\n", msg[1], msg[2], msg[3], sentpoints[0].latitude);
+        printf("longitude deg %d, min %d, sec %d, degree %d, from %f\n", msg[4], msg[5], msg[6], msg[7], sentpoints[0].longitude);
+        msg[9] = idvar;
+        idvar++;
+        if((idvar%2)!=0)             /* alternatve weapons based on msgid */
+                msg[8] = 1;
+        else
+                msg[8] = 2;
         
         //send created message
         ssize_t nsent;
@@ -211,20 +168,34 @@ bool invalid = false;
             printf("Error on send\n");
         }
         uint8_t resp[6];
-        
+        printf("passes here");
 
         /* receive response */
+        struct timeval tv2;
+        tv2.tv_sec = 1; //added
+        tv2.tv_usec = 5;
+        int timeoutset2;
+        //can set at the socket level, but attempt to indicate that an option is interpreted by the TCP yields an error "Protocol not available"
+        if ((timeoutset2 = setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv2, sizeof tv2)) < 0) {
+            printf("timeout setting error (%s)", strerror(errno));
+        }
+        else {
+            printf("%d (%s)", timeoutset2, strerror(errno));
+        }
+    
         ssize_t nrecv;
         if((nrecv = recv(sock,(void*)resp,6,0))<0){
-            printf("Error on send\n");
+            printf("Error on receive\n");
         }
-        /*sleep(2);
-        shutdown(sock, 0);
+        printf("hi");
+        printf("errno %s", strerror(errno));
         
-        if (resp[0] == 0 && resp[1] == 0) {
-            printf("timeout occurred; resend message");
+        
+        if (errno == EAGAIN || errno == EWOULDBLOCK) {
+            printf("TIMEOUT YAY!!");
+            NSString *str = [NSString stringWithFormat:@"TIMEOUT: SEND AGAIN"];
+            _tx_server_response.text = str;
         }
-        else*/
         
         if (resp[1] != (idvar-1)) {
             printf("response %d, id %d", resp[1], idvar);
@@ -269,12 +240,6 @@ bool invalid = false;
     
         }
         
-        if (invalid == false) {
-            [self.TargetButton setTitle:@"Invalid" forState:UIControlStateNormal];
-        }
-        else
-            [self.TargetButton setTitle:@"Target" forState:UIControlStateNormal];
-        invalid=!invalid;
         self.isDrawingPolygon = NO;
         //[self.drawPolygonButton setTitle:@"EZ" forState:UIControlStateNormal];
         self.canvasView.image = nil;
@@ -282,6 +247,7 @@ bool invalid = false;
         
     }
 }
+
 - (IBAction)didTouchUpInsideDrawButton:(UIButton*)sender
 {
     type = 2;
@@ -381,9 +347,29 @@ bool invalid = false;
                 /* receive response */
         NSString *str; // string to hold response for text field
         NSString* str2; //second received message info
+        
+        /* receive response */
+        struct timeval tv2;
+        tv2.tv_sec = 1; //added
+        tv2.tv_usec = 5;
+        int timeoutset2;
+        //can set at the socket level, but attempt to indicate that an option is interpreted by the TCP yields an error "Protocol not available"
+        if ((timeoutset2 = setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv2, sizeof tv2)) < 0) {
+            printf("timeout setting error (%s)", strerror(errno));
+        }
+        else {
+            printf("%d (%s)", timeoutset2, strerror(errno));
+        }
+        
         ssize_t nrecv;
         if((nrecv = recv(sock,(void*)resp,2,0))<0){
             printf("Error on send\n");
+        }
+        
+        if (errno == EAGAIN || errno == EWOULDBLOCK) {
+            printf("TIMEOUT YAY!!");
+            NSString *str = [NSString stringWithFormat:@"TIMEOUT: SEND AGAIN"];
+            _tx_server_response.text = str;
         }
         
         if (resp[1] != (idvar-1)) {
@@ -421,53 +407,7 @@ bool invalid = false;
             }
         }
         
-        if((nrecv = recv(sock,(void*)resp,2,0))<0){
-            printf("Error on send\n");
-        }
-        
-        if (resp[1] != (idvar-1)) {
-            printf("unmatched message detected");
-        }
-        else {
-            switch(resp[0]) {
-                case 64: {
-                    str2 = [NSString stringWithFormat:@"CYBER THREAT DETECTED"];
-                    break;
-                }
-                case 80: {
-                    str2 = [NSString stringWithFormat:@"FIRING FAULT DETECTED"];
-                    break;
-                }
-                case 96: {
-                    str2 = [NSString stringWithFormat:@"INVALID TARGET DETECTED"];
-                    break;
-                }
-                case 112: {
-                    str2 = [NSString stringWithFormat:@"WEAPON AWAY DTECTED"];
-                    break;
-                }
-                case 128: {
-                    str2 = [NSString stringWithFormat:@"KERNAL FAULT DETECTED"];
-                    break;
-                }
-                case 129: {
-                    str2 = [NSString stringWithFormat:@"MESSAGE FAULT DETECTED"];
-                    break;
-                }
-                default: {
-                    str2 = [NSString stringWithFormat:@"code %d MsgID %d",resp[0],resp[1]];
-                }
-            }
-        }
-        //str = [str stringByAppendingFormat:@" -- %@", str2];
-        
-        //only print message if both messages received back are the same, otherwise print an error
-        if ([str isEqualToString:str2]) {
-            _tx_server_response.text = str;
-        }
-        else {
-            _tx_server_response.text = @"Inconsistent Response Resend Coordinates";
-        }
+        _tx_server_response.text = str;
         
         self.isDrawingPolygon = NO;
         //[self.drawPolygonButton setTitle:@"EZ" forState:UIControlStateNormal];
@@ -579,10 +519,31 @@ bool invalid = false;
                 /* receive response */
         NSString *str;
         NSString *str2;
+        
+        /* receive response */
+        struct timeval tv2;
+        tv2.tv_sec = 1; //added
+        tv2.tv_usec = 5;
+        int timeoutset2;
+        //can set at the socket level, but attempt to indicate that an option is interpreted by the TCP yields an error "Protocol not available"
+        if ((timeoutset2 = setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv2, sizeof tv2)) < 0) {
+            printf("timeout setting error (%s)", strerror(errno));
+        }
+        else {
+            printf("%d (%s)", timeoutset2, strerror(errno));
+        }
+        
         ssize_t nrecv;
         if((nrecv = recv(sock,(void*)resp,2,0))<0){
             printf("Error on send\n");
         }
+        
+        if (errno == EAGAIN || errno == EWOULDBLOCK) {
+            printf("TIMEOUT YAY!!");
+            NSString *str = [NSString stringWithFormat:@"TIMEOUT: SEND AGAIN"];
+            _tx_server_response.text = str;
+        }
+        
         if (resp[1] != (idvar-1)) {
             printf("unmatched message detected");
         }
@@ -617,55 +578,8 @@ bool invalid = false;
                 }
             }
         }
-        
-        //second message
-        if((nrecv = recv(sock,(void*)resp,2,0))<0){
-            printf("Error on send\n");
-        }
-        
-        if (resp[1] != (idvar-1)) {
-            printf("unmatched message detected");
-        }
-        else {
-            switch(resp[0]) {
-                case 64: {
-                    str2 = [NSString stringWithFormat:@"CYBER THREAT DETECTED"];
-                    break;
-                }
-                case 80: {
-                    str2 = [NSString stringWithFormat:@"FIRING FAULT DETECTED"];
-                    break;
-                }
-                case 96: {
-                    str2 = [NSString stringWithFormat:@"INVALID TARGET DETECTED"];
-                    break;
-                }
-                case 112: {
-                    str2 = [NSString stringWithFormat:@"WEAPON AWAY DTECTED"];
-                    break;
-                }
-                case 128: {
-                    str2 = [NSString stringWithFormat:@"KERNAL FAULT DETECTED"];
-                    break;
-                }
-                case 129: {
-                    str2 = [NSString stringWithFormat:@"MESSAGE FAULT DETECTED"];
-                    break;
-                }
-                default: {
-                    str2 = [NSString stringWithFormat:@"code %d MsgID %d",resp[0],resp[1]];
-                }
-            }
-        }
-        //str = [str stringByAppendingFormat:@" -- %@", str2];
-        
-        //only print message if both messages received back are the same, otherwise print an error
-        if ([str isEqualToString:str2]) {
-            _tx_server_response.text = str;
-        }
-        else {
-            _tx_server_response.text = @"Invalid Response Resend Coordinates";
-        }
+       
+        _tx_server_response.text = str;
         
         self.isDrawingPolygon = NO;
         //[self.drawPolygonButton setTitle:@"EZ" forState:UIControlStateNormal];
@@ -827,3 +741,4 @@ bool invalid = false;
 
 
 @end
+
