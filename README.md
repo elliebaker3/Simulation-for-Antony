@@ -1,2 +1,1 @@
-add polygons with freehand drawing . I hope it will help you.
-=============
+Make sure to change the IP Address which is currently 10.0.0.145 to whatever your IP is! Also don't change the ios version it runs on... some functionality is not supported in later ios versions. You also may receive a warning when you run about needing a "unique identifier" if that happens text me or try renaming from MapkitDrawingEllie to something else.
